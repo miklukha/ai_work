@@ -4,7 +4,7 @@ import { ContrastLight } from 'survey-core/themes/contrast-light';
 import { Survey } from 'survey-react-ui';
 import { surveyJson } from './json';
 
-export const CompletePage = () => {
+export const CompletePage = ({ answers }) => {
   const survey = new Model(surveyJson);
   survey.applyTheme(ContrastLight);
 
@@ -12,7 +12,9 @@ export const CompletePage = () => {
     civilwar: '1861-1865',
     libertyordeath: 'Samuel Adams',
     magnacarta: 'The foundation of the British parliamentary system',
+    ...answers,
   };
+  // console.log(survey.data);
 
   survey.mode = 'display';
   survey.questionsOnPageMode = 'singlePage';
@@ -40,7 +42,7 @@ export const CompletePage = () => {
     if (!q) return;
 
     const isCorrect = q.isAnswerCorrect();
-    console.log(isCorrect);
+    // console.log(isCorrect);
 
     if (!q.prevTitle) {
       q.prevTitle = q.title;

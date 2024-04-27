@@ -1,12 +1,75 @@
 import express from 'express';
 import { config } from 'dotenv';
 import cors from 'cors';
+import OpenAI from 'openai';
 
 const app = express();
 const router = express.Router();
 config();
 
 const { KEY, PORT = 5000 } = process.env;
+const openai = new OpenAI({ apiKey: KEY });
+
+const getQuestions = async query => {
+  try {
+    const prompt = `Створи вікторину на тему ${query} і поверни в такому вигляді [
+      {
+        elements: [
+          {
+            type: 'radiogroup',
+            name: 'civilwar',
+            title: 'When was the American Civil War?',
+            choices: ['1796-1803', '1810-1814', '1861-1865', '1939-1945'],
+            correctAnswer: '1861-1865',
+          },
+        ],
+      },
+      {
+        elements: [
+          {
+            type: 'radiogroup',
+            name: 'libertyordeath',
+            title: 'Whose quote is this: "Give me liberty, or give me death"?',
+            choices: [
+              'John Hancock',
+              'James Madison',
+              'Patrick Henry',
+              'Samuel Adams',
+            ],
+            correctAnswer: 'Patrick Henry',
+          },
+        ],
+      },
+      {
+        elements: [
+          {
+            type: 'radiogroup',
+            name: 'magnacarta',
+            title: 'What is Magna Carta?',
+            choices: [
+              'The foundation of the British parliamentary system',
+              'The Great Seal of the monarchs of England',
+              'The French Declaration of the Rights of Man',
+              'The charter signed by the Pilgrims on the Mayflower',
+            ],
+            correctAnswer: 'The foundation of the British parliamentary system',
+          },
+        ],
+      },
+    ] але всі питання і відповіді і теми повинні бути українською. запитань має бути 2`;
+
+    const completion = await openai.chat.completions.create({
+      messages: [{ role: 'user', content: prompt }],
+      model: 'gpt-4-turbo',
+      temperature: 0.5,
+      max_tokens: 4000,
+    });
+
+    return completion.choices[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 app.use(cors());
 app.use(express.json());
@@ -15,10 +78,16 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.get('/get/:query', (req, res) => {
+app.get('/get/:query', async (req, res) => {
   const { query } = req.params;
-
-  res.json({ m: 'GET request to the homepage' });
+  try {
+    const questions = await getQuestions(query);
+    console.log('questions', questions);
+    res.json(questions);
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 });
 
 app.use((req, res) => {
@@ -33,46 +102,3 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
-
-// const axios = require('axios');
-
-// // Function to generate prompt
-// function generatePrompt() {
-//   let typeQ = 'географія України';
-//   let totalPrompt = `Створити квіз на тему ${typeQ} і поверни в такому вигляді const surveyJson = { ... } але всі питання і відповеді і теми повині бути українською`;
-//   return totalPrompt;
-// }
-
-// // Function to send prompt to OpenAI API
-// async function sendPromptToOpenAI(prompt) {
-//   try {
-//     const response = await axios.post(
-//       'https://api.openai.com/v1/engines/gpt-4/completions',
-//       {
-//         prompt: prompt,
-//         temperature: 0.5,
-//         max_tokens: 4000,
-//         stop: [],
-//       },
-//       {
-//         headers: {
-//           Authorization: 'Bearer YOUR_OPENAI_API_KEY',
-//         },
-//       },
-//     );
-//     return response.data.choices[0].text;
-//   } catch (error) {
-//     console.error('Error:', error);
-//     return null;
-//   }
-// }
-
-// // Example function to simulate the flow
-// async function simulateFlow() {
-//   const prompt = generatePrompt();
-//   const response = await sendPromptToOpenAI(prompt);
-//   console.log(response);
-// }
-
-// // Call the function to simulate the flow
-// simulateFlow();
