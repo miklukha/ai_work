@@ -1,17 +1,16 @@
-import 'survey-core/defaultV2.min.css';
-import { Model } from 'survey-core';
-import { Survey } from 'survey-react-ui';
-import { ContrastLight } from 'survey-core/themes/contrast-light';
-import { useState } from 'react';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import { Model } from 'survey-core';
+import 'survey-core/defaultV2.min.css';
+import { ContrastLight } from 'survey-core/themes/contrast-light';
+import { Survey } from 'survey-react-ui';
 import { SurveyPage } from './SurveyPage';
 
 axios.defaults.baseURL = 'http://localhost:5000/';
 axios.defaults.headers = { 'Access-Control-Allow-Origin': '*' };
 
 const surveyJson = {
-  title: 'Вікторина',
+  title: 'ВІКТОРИНА',
   firstPageIsStarted: true,
   completeText: 'Почати',
   completedHtml:
@@ -39,39 +38,14 @@ export const BeginPage = () => {
   const [data, setData] = useState([]);
   const [answers, setAnswers] = useState({});
 
-  // const survey = new Model(surveyJson);
   const survey = new Model(surveyJson);
-
   survey.applyTheme(ContrastLight);
-
-  // useEffect(() => {
-  //   const t = async () => {
-  //     try {
-  //       const response = await axios.get(`/get`);
-  //       const survey = response.data;
-  //       const surveyAnswers = survey.pages.reduce((obj, { elements }) => {
-  //         return {
-  //           ...obj,
-  //           [elements[0].name]: elements[0].correctAnswer,
-  //         };
-  //       }, {});
-
-  //       setData(survey);
-  //       setAnswers(surveyAnswers);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   t();
-  // }, []);
 
   survey.onComplete.add(async () => {
     const { query } = survey.data;
 
-    // const fetchData = async () => {
     try {
-      const response = await axios.get('/get');
+      const response = await axios.get(`/get/${query}`);
       const survey = response.data;
       const surveyAnswers = survey.pages.reduce((obj, { elements }) => {
         return {
@@ -82,30 +56,12 @@ export const BeginPage = () => {
 
       setData(survey);
       setAnswers(surveyAnswers);
-      // setData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
 
     setIsComplete(true);
-    // };
   });
-
-  // survey.onComplete.add(async () => {
-  //   const { query } = survey.data;
-
-  //   // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get(`/get/${query}`);
-  //     console.log(response.data.message.content);
-  //     // setData(response.data);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-
-  //   setIsComplete(true);
-  //   // };
-  // });
 
   return !isComplete ? (
     <Survey model={survey} style={{ height: '100%' }} />

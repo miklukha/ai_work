@@ -3,10 +3,8 @@ import { config } from 'dotenv';
 import cors from 'cors';
 import OpenAI from 'openai';
 import fs from 'fs';
-import path from 'path';
 
 const app = express();
-const router = express.Router();
 config();
 
 const { KEY, PORT = 5000 } = process.env;
@@ -14,51 +12,30 @@ const openai = new OpenAI({ apiKey: KEY });
 
 const getQuestions = async query => {
   try {
-    const prompt = `Створи вікторину на тему ${query} і поверни в такому вигляді [
+    const prompt = `Створи вікторину на тему ${query} і поверни в такому вигляді json формат (не вказуй в якому форматі ти повертає) [
+  {
+    "elements": [
       {
-        elements: [
-          {
-            type: 'radiogroup',
-            name: 'civilwar',
-            title: 'When was the American Civil War?',
-            choices: ['1796-1803', '1810-1814', '1861-1865', '1939-1945'],
-            correctAnswer: '1861-1865',
-          },
-        ],
-      },
+        "type": "radiogroup",
+        "name": "highestmountain",
+        "title": "Яка найвища гора в світі?",
+        "choices": ["Кіліманджаро", "Еверест", "Монблан", "К2"],
+        "correctAnswer": "Еверест"
+      }
+    ]
+  },
+  {
+    "elements": [
       {
-        elements: [
-          {
-            type: 'radiogroup',
-            name: 'libertyordeath',
-            title: 'Whose quote is this: "Give me liberty, or give me death"?',
-            choices: [
-              'John Hancock',
-              'James Madison',
-              'Patrick Henry',
-              'Samuel Adams',
-            ],
-            correctAnswer: 'Patrick Henry',
-          },
-        ],
-      },
-      {
-        elements: [
-          {
-            type: 'radiogroup',
-            name: 'magnacarta',
-            title: 'What is Magna Carta?',
-            choices: [
-              'The foundation of the British parliamentary system',
-              'The Great Seal of the monarchs of England',
-              'The French Declaration of the Rights of Man',
-              'The charter signed by the Pilgrims on the Mayflower',
-            ],
-            correctAnswer: 'The foundation of the British parliamentary system',
-          },
-        ],
-      },
-    ] але всі питання і відповіді і теми повинні бути українською. запитань має бути 2`;
+        "type": "radiogroup",
+        "name": "largestocean",
+        "title": "Який найбільший океан у світі?",
+        "choices": ["Атлантичний океан", "Індійський океан", "Південний океан", "Тихий океан"],
+        "correctAnswer": "Тихий океан"
+      }
+    ]
+  }
+] але всі питання і відповіді і теми повинні бути українською. запитань має бути 10`;
 
     const completion = await openai.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
@@ -73,87 +50,88 @@ const getQuestions = async query => {
   }
 };
 
-const test = () => {
-  fs.readFile('survey.json', 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
+// const test = () => {
+//   // fs.readFile('survey.json', 'utf8', (err, data) => {
+//   //   if (err) {
+//   //     console.error(err);
+//   //     return;
+//   //   }
 
-    // console.log('data', data);
+//   //   // console.log('data', data);
 
-    const jsonData = JSON.parse(data);
+//   //   const jsonData = JSON.parse(data);
 
-    jsonData.title = 'Географія';
-    jsonData.pages = [
-      {
-        elements: [
-          {
-            type: 'radiogroup',
-            name: 'civilwar',
-            title: 'When was the American Civil War?',
-            choices: ['1796-1803', '1810-1814', '1861-1865', '1939-1945'],
-            correctAnswer: '1861-1865',
-          },
-        ],
-      },
-      {
-        elements: [
-          {
-            type: 'radiogroup',
-            name: 'libertyordeath',
-            title: 'Whose quote is this: "Give me liberty, or give me death"?',
-            choicesOrder: 'random',
-            choices: [
-              'John Hancock',
-              'James Madison',
-              'Patrick Henry',
-              'Samuel Adams',
-            ],
-            correctAnswer: 'Patrick Henry',
-          },
-        ],
-      },
-      {
-        elements: [
-          {
-            type: 'radiogroup',
-            name: 'magnacarta',
-            title: 'What is Magna Carta?',
-            choicesOrder: 'random',
-            choices: [
-              'The foundation of the British parliamentary system',
-              'The Great Seal of the monarchs of England',
-              'The French Declaration of the Rights of Man',
-              'The charter signed by the Pilgrims on the Mayflower',
-            ],
-            correctAnswer: 'The foundation of the British parliamentary system',
-          },
-        ],
-      },
-    ];
+//   //   jsonData.title = 'Географія';
+//   //   // toUpperCase()
+//   //   jsonData.pages = [
+//   //     {
+//   //       elements: [
+//   //         {
+//   //           type: 'radiogroup',
+//   //           name: 'civilwar',
+//   //           title: 'When was the American Civil War?',
+//   //           choices: ['1796-1803', '1810-1814', '1861-1865', '1939-1945'],
+//   //           correctAnswer: '1861-1865',
+//   //         },
+//   //       ],
+//   //     },
+//   //     {
+//   //       elements: [
+//   //         {
+//   //           type: 'radiogroup',
+//   //           name: 'libertyordeath',
+//   //           title: 'Whose quote is this: "Give me liberty, or give me death"?',
+//   //           choicesOrder: 'random',
+//   //           choices: [
+//   //             'John Hancock',
+//   //             'James Madison',
+//   //             'Patrick Henry',
+//   //             'Samuel Adams',
+//   //           ],
+//   //           correctAnswer: 'Patrick Henry',
+//   //         },
+//   //       ],
+//   //     },
+//   //     {
+//   //       elements: [
+//   //         {
+//   //           type: 'radiogroup',
+//   //           name: 'magnacarta',
+//   //           title: 'What is Magna Carta?',
+//   //           choicesOrder: 'random',
+//   //           choices: [
+//   //             'The foundation of the British parliamentary system',
+//   //             'The Great Seal of the monarchs of England',
+//   //             'The French Declaration of the Rights of Man',
+//   //             'The charter signed by the Pilgrims on the Mayflower',
+//   //           ],
+//   //           correctAnswer: 'The foundation of the British parliamentary system',
+//   //         },
+//   //       ],
+//   //     },
+//   //   ];
 
-    // console.log('jsonData', jsonData);
+//   //   // console.log('jsonData', jsonData);
 
-    // jsonData.push({
-    //   question: messageText,
-    //   answered: false,
-    //   from: msg.chat.first_name,
-    // });
+//   //   // jsonData.push({
+//   //   //   question: messageText,
+//   //   //   answered: false,
+//   //   //   from: msg.chat.first_name,
+//   //   // });
 
-    const updatedData = JSON.stringify(jsonData, null, 2); // the '2' parameter for pretty formatting
+//   //   const updatedData = JSON.stringify(jsonData, null, 2); // the '2' parameter for pretty formatting
 
-    console.log(updatedData);
+//   //   console.log(updatedData);
 
-    fs.writeFile('survey.json', updatedData, err => {
-      if (err) {
-        console.error(err);
-      } else {
-        console.log('Data added successfully.');
-      }
-    });
-  });
-};
+//   //   fs.writeFile('survey.json', updatedData, err => {
+//   //     if (err) {
+//   //       console.error(err);
+//   //     } else {
+//   //       console.log('Data added successfully.');
+//   //     }
+//   //   });
+//   // });
+// };
 // test();
 
 app.use(cors());
@@ -165,26 +143,67 @@ app.get('/', (req, res) => {
 
 app.get('/get/:query', async (req, res) => {
   const { query } = req.params;
+
   try {
     const questions = await getQuestions(query);
-    console.log('questions', questions);
-    res.json(questions);
+
+    // fs.readFile('survey.json', 'utf8', (err, data) => {
+    //   if (err) {
+    //     console.error(err);
+    //     return;
+    //   }
+
+    //   res.send(data);
+    // });
+
+    fs.readFile('survey.json', 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      const jsonData = JSON.parse(data);
+
+      jsonData.title = query.toUpperCase();
+      jsonData.pages = JSON.parse(questions.message.content);
+
+      const updatedData = JSON.stringify(jsonData, null, 2);
+      console.log('updatedData', updatedData);
+
+      fs.writeFile('survey.json', updatedData, err => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('Data added successfully.');
+          res.send(updatedData);
+        }
+      });
+    });
+
+    // fs.readFile('survey.json', 'utf8', (err, data) => {
+    //   if (err) {
+    //     console.error(err);
+    //     return;
+    //   }
+
+    //   res.send(data);
+    // });
   } catch (error) {
     console.log(error);
     return null;
   }
 });
 
-app.get('/get', async (req, res) => {
-  fs.readFile('survey.json', 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
+// app.get('/get', async (req, res) => {
+//   fs.readFile('survey.json', 'utf8', (err, data) => {
+//     if (err) {
+//       console.error(err);
+//       return;
+//     }
 
-    res.send(data);
-  });
-});
+//     res.send(data);
+//   });
+// });
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });

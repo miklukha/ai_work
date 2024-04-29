@@ -1,58 +1,11 @@
 {
-  "title": "Географія",
+  "title": "КІНО",
   "showProgressBar": "bottom",
   "showTimerPanel": "top",
   "maxTimeToFinishPage": 10,
   "maxTimeToFinish": 100,
   "pageNextText": "Далі",
   "completeText": "Завершити",
-  "pages": [
-    {
-      "elements": [
-        {
-          "type": "radiogroup",
-          "name": "civilwar",
-          "title": "Коли була ?",
-          "choices": ["1796-1803", "1810-1814", "1861-1865", "1939-1945"],
-          "correctAnswer": "1861-1865"
-        }
-      ]
-    },
-    {
-      "elements": [
-        {
-          "type": "radiogroup",
-          "name": "libertyordeath",
-          "title": "Чия: \"Give me liberty, or give me death\"?",
-          "choicesOrder": "random",
-          "choices": [
-            "John Hancock",
-            "James Madison",
-            "Патрік",
-            "Samuel Adams"
-          ],
-          "correctAnswer": "Патрік"
-        }
-      ]
-    },
-    {
-      "elements": [
-        {
-          "type": "radiogroup",
-          "name": "magnacarta",
-          "title": "What is Magna Carta?",
-          "choicesOrder": "random",
-          "choices": [
-            "The foundation of the British parliamentary system",
-            "The Great Seal of the monarchs of England",
-            "The French Declaration of the Rights of Man",
-            "The charter signed by the Pilgrims on the Mayflower"
-          ],
-          "correctAnswer": "The foundation of the British parliamentary system"
-        }
-      ]
-    }
-  ],
   "completedHtml": "<h4>Ви маєте <b>{correctAnswers}</b> правильних відповідей з <b>{questionCount}</b> запитань.</h4>",
   "completedHtmlOnCondition": [
     {
@@ -62,6 +15,168 @@
     {
       "expression": "{correctAnswers} == {questionCount}",
       "html": "<h4>Вітаю! Всі відповіді правильні!</h4>"
+    }
+  ],
+  "pages": [
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "firstOscarBestPicture",
+          "title": "Який фільм першим отримав Оскар за найкращий фільм?",
+          "choices": [
+            "Крила",
+            "Метрополіс",
+            "Сонце встає",
+            "Великий Гетсбі"
+          ],
+          "correctAnswer": "Крила"
+        }
+      ]
+    },
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "directorOfTitanic",
+          "title": "Хто є режисером фільму 'Титанік'?",
+          "choices": [
+            "Стивен Спілберг",
+            "Джеймс Кемерон",
+            "Квентін Тарантіно",
+            "Мартін Скорсезе"
+          ],
+          "correctAnswer": "Джеймс Кемерон"
+        }
+      ]
+    },
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "actorOfJoker2019",
+          "title": "Хто зіграв роль Джокера у фільмі 2019 року?",
+          "choices": [
+            "Хоакін Фенікс",
+            "Джаред Лето",
+            "Джек Ніколсон",
+            "Хіт Леджер"
+          ],
+          "correctAnswer": "Хоакін Фенікс"
+        }
+      ]
+    },
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "animatedFeatureFilm",
+          "title": "Який анімаційний фільм виграв Оскар у 2020 році?",
+          "choices": [
+            "Крижане серце II",
+            "Історія іграшок 4",
+            "Клаус",
+            "Як приборкати дракона 3"
+          ],
+          "correctAnswer": "Історія іграшок 4"
+        }
+      ]
+    },
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "bestPicture2021",
+          "title": "Який фільм отримав Оскар за найкращий фільм у 2021 році?",
+          "choices": [
+            "Манк",
+            "Джудас і чорний месія",
+            "Земля кочівників",
+            "Тріал Чиказької сімки"
+          ],
+          "correctAnswer": "Земля кочівників"
+        }
+      ]
+    },
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "harryPotterFirstMovie",
+          "title": "Як називається перший фільм про Гаррі Поттера?",
+          "choices": [
+            "Гаррі Поттер і філософський камінь",
+            "Гаррі Поттер і таємна кімната",
+            "Гаррі Поттер і в'язень Азкабану",
+            "Гаррі Поттер і келих вогню"
+          ],
+          "correctAnswer": "Гаррі Поттер і філософський камінь"
+        }
+      ]
+    },
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "largestFilmBudget",
+          "title": "Який фільм має найбільший бюджет у світі станом на 2021 рік?",
+          "choices": [
+            "Аватар",
+            "Пірати Карибського моря: На дивних берегах",
+            "Месники: Війна нескінченності",
+            "Месники: Завершення"
+          ],
+          "correctAnswer": "Пірати Карибського моря: На дивних берегах"
+        }
+      ]
+    },
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "mostOscarsFilm",
+          "title": "Який фільм отримав найбільшу кількість Оскарів?",
+          "choices": [
+            "Бен-Гур",
+            "Титанік",
+            "Володар перснів: Повернення короля",
+            "Ла-Ла Ленд"
+          ],
+          "correctAnswer": "Титанік"
+        }
+      ]
+    },
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "filmWithMostSequels",
+          "title": "Яка кінофраншиза має найбільшу кількість сиквелів?",
+          "choices": [
+            "Джеймс Бонд",
+            "Гаррі Поттер",
+            "Зоряні війни",
+            "Форсаж"
+          ],
+          "correctAnswer": "Джеймс Бонд"
+        }
+      ]
+    },
+    {
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "firstAnimatedFeature",
+          "title": "Який перший повнометражний анімаційний фільм?",
+          "choices": [
+            "Снігова королева",
+            "Білосніжка і семеро гномів",
+            "Піноккіо",
+            "Фантазія"
+          ],
+          "correctAnswer": "Білосніжка і семеро гномів"
+        }
+      ]
     }
   ]
 }
