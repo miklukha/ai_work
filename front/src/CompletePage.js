@@ -1,20 +1,10 @@
-import { Model } from 'survey-core';
 import 'survey-core/defaultV2.min.css';
 import { ContrastLight } from 'survey-core/themes/contrast-light';
 import { Survey } from 'survey-react-ui';
-import { surveyJson } from './json';
 
-export const CompletePage = ({ answers }) => {
-  const survey = new Model(surveyJson);
+export const CompletePage = ({ answers, survey, userAnswers }) => {
   survey.applyTheme(ContrastLight);
-
-  survey.data = {
-    civilwar: '1861-1865',
-    libertyordeath: 'Samuel Adams',
-    magnacarta: 'The foundation of the British parliamentary system',
-    ...answers,
-  };
-  // console.log(survey.data);
+  survey.data = answers;
 
   survey.mode = 'display';
   survey.questionsOnPageMode = 'singlePage';
@@ -28,6 +18,7 @@ export const CompletePage = ({ answers }) => {
 
   const getTextHtml = (text, str, isCorrect) => {
     if (text.indexOf(str) < 0) return undefined;
+
     return (
       text.substring(0, text.indexOf(str)) +
       "<span class='" +
@@ -39,14 +30,20 @@ export const CompletePage = ({ answers }) => {
   };
 
   const renderCorrectAnswer = q => {
+    let isCorrect = false;
+
     if (!q) return;
 
-    const isCorrect = q.isAnswerCorrect();
-    // console.log(isCorrect);
+    if (!!userAnswers[q.name]) {
+      if (userAnswers[q.name] === q.value) {
+        isCorrect = true;
+      }
+    }
 
     if (!q.prevTitle) {
       q.prevTitle = q.title;
     }
+
     if (isCorrect === undefined) {
       q.title = q.prevTitle;
     }
@@ -55,11 +52,13 @@ export const CompletePage = ({ answers }) => {
   };
 
   survey.onValueChanged.add((sender, options) => {
+    console.log('options', options);
     renderCorrectAnswer(options.question);
   });
 
   survey.onTextMarkdown.add((sender, options) => {
     const text = options.text;
+
     let html = getTextHtml(text, correctStr, true);
 
     if (!html) {
@@ -70,7 +69,9 @@ export const CompletePage = ({ answers }) => {
     }
   });
 
-  survey.getAllQuestions().forEach(q => renderCorrectAnswer(q));
+  survey.getAllQuestions().forEach(q => {
+    return renderCorrectAnswer(q);
+  });
 
   return <Survey model={survey} />;
 };
