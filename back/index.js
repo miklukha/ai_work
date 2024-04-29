@@ -1,8 +1,8 @@
-import express from 'express';
-import { config } from 'dotenv';
 import cors from 'cors';
-import OpenAI from 'openai';
+import { config } from 'dotenv';
+import express from 'express';
 import fs from 'fs';
+import OpenAI from 'openai';
 
 const app = express();
 config();
@@ -50,90 +50,6 @@ const getQuestions = async query => {
   }
 };
 
-// const test = () => {
-//   // fs.readFile('survey.json', 'utf8', (err, data) => {
-//   //   if (err) {
-//   //     console.error(err);
-//   //     return;
-//   //   }
-
-//   //   // console.log('data', data);
-
-//   //   const jsonData = JSON.parse(data);
-
-//   //   jsonData.title = 'Географія';
-//   //   // toUpperCase()
-//   //   jsonData.pages = [
-//   //     {
-//   //       elements: [
-//   //         {
-//   //           type: 'radiogroup',
-//   //           name: 'civilwar',
-//   //           title: 'When was the American Civil War?',
-//   //           choices: ['1796-1803', '1810-1814', '1861-1865', '1939-1945'],
-//   //           correctAnswer: '1861-1865',
-//   //         },
-//   //       ],
-//   //     },
-//   //     {
-//   //       elements: [
-//   //         {
-//   //           type: 'radiogroup',
-//   //           name: 'libertyordeath',
-//   //           title: 'Whose quote is this: "Give me liberty, or give me death"?',
-//   //           choicesOrder: 'random',
-//   //           choices: [
-//   //             'John Hancock',
-//   //             'James Madison',
-//   //             'Patrick Henry',
-//   //             'Samuel Adams',
-//   //           ],
-//   //           correctAnswer: 'Patrick Henry',
-//   //         },
-//   //       ],
-//   //     },
-//   //     {
-//   //       elements: [
-//   //         {
-//   //           type: 'radiogroup',
-//   //           name: 'magnacarta',
-//   //           title: 'What is Magna Carta?',
-//   //           choicesOrder: 'random',
-//   //           choices: [
-//   //             'The foundation of the British parliamentary system',
-//   //             'The Great Seal of the monarchs of England',
-//   //             'The French Declaration of the Rights of Man',
-//   //             'The charter signed by the Pilgrims on the Mayflower',
-//   //           ],
-//   //           correctAnswer: 'The foundation of the British parliamentary system',
-//   //         },
-//   //       ],
-//   //     },
-//   //   ];
-
-//   //   // console.log('jsonData', jsonData);
-
-//   //   // jsonData.push({
-//   //   //   question: messageText,
-//   //   //   answered: false,
-//   //   //   from: msg.chat.first_name,
-//   //   // });
-
-//   //   const updatedData = JSON.stringify(jsonData, null, 2); // the '2' parameter for pretty formatting
-
-//   //   console.log(updatedData);
-
-//   //   fs.writeFile('survey.json', updatedData, err => {
-//   //     if (err) {
-//   //       console.error(err);
-//   //     } else {
-//   //       console.log('Data added successfully.');
-//   //     }
-//   //   });
-//   // });
-// };
-// test();
-
 app.use(cors());
 app.use(express.json());
 
@@ -146,15 +62,6 @@ app.get('/get/:query', async (req, res) => {
 
   try {
     const questions = await getQuestions(query);
-
-    // fs.readFile('survey.json', 'utf8', (err, data) => {
-    //   if (err) {
-    //     console.error(err);
-    //     return;
-    //   }
-
-    //   res.send(data);
-    // });
 
     fs.readFile('survey.json', 'utf8', (err, data) => {
       if (err) {
@@ -179,31 +86,11 @@ app.get('/get/:query', async (req, res) => {
         }
       });
     });
-
-    // fs.readFile('survey.json', 'utf8', (err, data) => {
-    //   if (err) {
-    //     console.error(err);
-    //     return;
-    //   }
-
-    //   res.send(data);
-    // });
   } catch (error) {
     console.log(error);
     return null;
   }
 });
-
-// app.get('/get', async (req, res) => {
-//   fs.readFile('survey.json', 'utf8', (err, data) => {
-//     if (err) {
-//       console.error(err);
-//       return;
-//     }
-
-//     res.send(data);
-//   });
-// });
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });
